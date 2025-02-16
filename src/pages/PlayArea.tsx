@@ -43,6 +43,7 @@ function PlayArea(props: SelectedCategoryProps) {
   const [gameOver, setGameOver] = useState<boolean>(false);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const [showAlert, setShowAlert] = useState<boolean>(false);
+  const [changed, setchanged] = useState(0);
   useEffect(() => {
     fetch("/data.json")
       .then((res) => res.json())
@@ -68,6 +69,7 @@ function PlayArea(props: SelectedCategoryProps) {
   };
 
   const startNewGame = (category: Data[]) => {
+    setchanged(changed + 1);
     setShowAlert(false);
     setwon(null);
     if (category.length === 0) return;
@@ -91,6 +93,7 @@ function PlayArea(props: SelectedCategoryProps) {
   }, [arr]);
 
   const GenerateNewGame = () => {
+    setchanged(changed + 1);
     setShowAlert(false);
     setwon(null);
     const availableWords = data.filter((item) => !item.selected);
@@ -113,6 +116,7 @@ function PlayArea(props: SelectedCategoryProps) {
     setSelectedString(capitalizeWords(newWord.name));
   };
   const RestartGame = () => {
+    setchanged(changed + 1);
     setShowAlert(false);
     setAllChars(abc);
     setwon(null);
@@ -151,18 +155,6 @@ function PlayArea(props: SelectedCategoryProps) {
       setAllChars(abc);
     }
   }, [arr]);
-
-  function renderBoxes() {
-    return allChars.map((char, index) => (
-      <Box
-        key={index}
-        char={char}
-        keyboard={true}
-        won={won}
-        onClick={buttonTrigger()}
-      />
-    ));
-  }
   return (
     <div className="p-4 min-h-screen bg-gradient-to-b bg-opacity-80 from-[#1a043a] to-[#151278]">
       <header>
@@ -193,12 +185,10 @@ function PlayArea(props: SelectedCategoryProps) {
                     </Link>
                     <Link to={``}>
                       <Button
-                        onClick={
-                          () => {
-                            RestartGame();
-                            setOpenDialog(false);
-                          }
-                        }
+                        onClick={() => {
+                          RestartGame();
+                          setOpenDialog(false);
+                        }}
                         className="h-24 text-2xl p-10 m-5 w-full font-mouse font-extrabold"
                       >
                         Restart Game
@@ -206,12 +196,10 @@ function PlayArea(props: SelectedCategoryProps) {
                     </Link>
                     <Link to={``}>
                       <Button
-                        onClick={
-                          () => {
-                            GenerateNewGame();
-                            setOpenDialog(false);
-                          }
-                        }
+                        onClick={() => {
+                          GenerateNewGame();
+                          setOpenDialog(false);
+                        }}
                         className="h-24 text-2xl p-10 m-5 w-full font-mouse font-extrabold"
                       >
                         New Game
@@ -238,19 +226,23 @@ function PlayArea(props: SelectedCategoryProps) {
         </div>
       </header>
       <div>
-        <AlertDialog open={showAlert} onOpenChange={()=>setShowAlert(false)}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>{won ? "You Won!" : "You Lost!"}</AlertDialogTitle>
-            <AlertDialogDescription>
-              {won ? "Congratulations! 🎉" : "Better luck next time. 😢"}
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogAction onClick={GenerateNewGame}>New Game</AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+        <AlertDialog open={showAlert} onOpenChange={() => setShowAlert(false)}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>
+                {won ? "You Won!" : "You Lost!"}
+              </AlertDialogTitle>
+              <AlertDialogDescription>
+                {won ? "Congratulations! 🎉" : "Better luck next time. 😢"}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogAction onClick={GenerateNewGame}>
+                New Game
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
 
       <div className="w-fit m-16 flex flex-row flex-wrap items-center justify-center gap-2">
@@ -272,15 +264,16 @@ function PlayArea(props: SelectedCategoryProps) {
         )}
       </div> */}
       <div className="w-fit m-10 flex flex-row flex-wrap items-center justify-center gap-2">
-        {renderBoxes()}
-        {/* {allChars.map((char, index) => (
+        {allChars.map((char, index) => (
           <Box
             key={index}
             char={char}
             keyboard={true}
+            won={won}
+            change={changed}
             onClick={buttonTrigger()}
           />
-        ))} */}
+        ))}
       </div>
     </div>
   );
