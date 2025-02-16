@@ -233,7 +233,7 @@ function PlayArea(props: SelectedCategoryProps) {
                 {won ? "You Won!" : "You Lost!"}
               </AlertDialogTitle>
               <AlertDialogDescription>
-                {won ? "Congratulations! 🎉" : "Better luck next time. 😢"}
+              {won ? "Congratulations! 🎉" : `Better luck next time 😢. The Answer is ${selectedString}`}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
