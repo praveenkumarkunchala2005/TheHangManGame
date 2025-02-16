@@ -37,7 +37,7 @@ function PlayArea(props: SelectedCategoryProps) {
   const [num, setNum] = useState<number | null>(null);
   const [selectedString, setSelectedString] = useState<string>("");
   const [arr, setArr] = useState<string[]>([]);
-  const [abc, setabc] = useState<string[]>(() => "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split(""));
+  const abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
   const [allChars, setAllChars] = useState<string[]>(abc);
   const [size, setSize] = useState<number>(0);
   const [gameOver, setGameOver] = useState<boolean>(false);
@@ -49,6 +49,12 @@ function PlayArea(props: SelectedCategoryProps) {
       .then((fetchedData) => {
         const category = fetchedData.categories[props.selectedCategory] || [];
         if (category.length > 0) {
+          if(size){
+            console.log("Size:", size);
+          }
+          if(gameOver){
+            console.log("Game Over:", gameOver);
+          }
           setSize(category.length);
           setData(category);
           setAllChars(abc);
@@ -158,7 +164,7 @@ function PlayArea(props: SelectedCategoryProps) {
     ));
   }
   return (
-    <div className="p-4 h-full bg-gradient-to-b bg-opacity-80 from-[#1a043a] to-[#151278]">
+    <div className="p-4 min-h-screen bg-gradient-to-b bg-opacity-80 from-[#1a043a] to-[#151278]">
       <header>
         <div className="flex justify-between items-center">
           <div className="flex justify-start items-center">
