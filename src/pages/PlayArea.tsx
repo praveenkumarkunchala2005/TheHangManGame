@@ -17,11 +17,6 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog"
 
-<style>
-  @import
-  url('https://fonts.googleapis.com/css2?family=Mouse+Memoirs&display=swap');
-</style>;
-
 interface SelectedCategoryProps {
   selectedCategory: string;
 }
